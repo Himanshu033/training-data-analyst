@@ -32,9 +32,9 @@ export MESH_ID="proj-${PROJECT_NUMBER}"
 # on-prem cluster values
 export C2_NAME="onprem"
 export C2_FULLNAME=$C2_NAME.k8s.local
-export C2_ZONE="us-west1-b"
+export C2_ZONE="us-central1-a"
 export NODE_COUNT=2
-export NODE_SIZE=n1-standard-2
+export NODE_SIZE=e2-standard-2
 export KOPS_ZONES=$C2_ZONE
 export INSTANCE_IP=$(curl -s api.ipify.org)
 export INSTANCE_CIDR=$INSTANCE_IP/32

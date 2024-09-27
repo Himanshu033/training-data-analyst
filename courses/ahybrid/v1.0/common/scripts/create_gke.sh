@@ -21,12 +21,13 @@ gcloud beta container clusters create ${C1_NAME} \
     --max-surge-upgrade 1 \
     --max-unavailable-upgrade 0 \
     --enable-autorepair \
-    --image-type "COS" \
+    --image-type "COS_CONTAINERD" \
     --release-channel "regular" \
-    --machine-type=n1-standard-4 \
+    --machine-type=e2-standard-4 \
     --num-nodes=${C1_NODES} \
     --workload-pool=${WORKLOAD_POOL} \
-    --enable-stackdriver-kubernetes \
+    --logging=SYSTEM,WORKLOAD \
+    --monitoring=SYSTEM \
     --metadata disable-legacy-endpoints=true \
     --labels mesh_id=${MESH_ID} \
     --addons HorizontalPodAutoscaling,HttpLoadBalancing \
@@ -40,7 +41,7 @@ gcloud beta container clusters create ${C1_NAME} \
 echo "Registering the gke cluster..."
 for (( i=1; i<=4; i++))
 do
-  res=$(gcloud container hub memberships register ${C1_NAME}-connect --gke-cluster=${C1_ZONE}/${C1_NAME} --enable-workload-identity 2>&1)
+  res=$(gcloud container fleet memberships register ${C1_NAME}-connect --gke-cluster=${C1_ZONE}/${C1_NAME} --enable-workload-identity 2>&1)
   g1=$(echo $res | grep "PERMISSION_DENIED: hub default service account does not have access to the GKE cluster project for")
   g2=$(echo $res | grep -c "PERMISSION_DENIED: hub default service account does not have access to the GKE cluster project for")
   if [[ "$g2" == "0" ]]; then
